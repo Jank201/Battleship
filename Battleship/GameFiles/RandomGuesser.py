@@ -2,7 +2,7 @@ from MainGameAI import BattleshipAI
 from Graph import plot
 from random import randint
 
-def train():
+def guesser():
     plot_scores = []
     plot_mean_scores = []
     total_score = 0
@@ -31,4 +31,4 @@ def train():
             plot(plot_scores, plot_mean_scores)
 
 if __name__ == '__main__':
-    train()
+    guesser()
