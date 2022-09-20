@@ -1,3 +1,4 @@
+from pickle import TRUE
 import pygame
 from random import randint 
 import time
@@ -61,7 +62,7 @@ class BattleshipAI:
     
         self.clock.tick(FPS)
 
-        return self.reward, self.gameOver, self.shots
+        return self.reward, self.gameOver, self.shots, self.HIT
 
 
     def reset(self):

@@ -1,6 +1,8 @@
-from MainGameAI import BattleshipAI
 from Graph import plot
 from random import randint
+import numpy as np
+from MainGameMath import BattleshipAI
+from MainGameMath import BOARDSQUARES
 
 def guesser():
     plot_scores = []
@@ -10,10 +12,12 @@ def guesser():
     game = BattleshipAI()
     games = 0
     while True:
-        Rarray = [0 for x in range(9)]
-        x = randint(0,8)
-        Rarray[x] = 1
-        reward, done, score = game.Gamer(Rarray)
+        Rarray = np.array([0,0])
+        x = randint(0,BOARDSQUARES-1)
+        y = randint(0,BOARDSQUARES-1)
+        Rarray[0] = x
+        Rarray[1] = y
+        reward, done, score, hit = game.Gamer(Rarray)
 
         if done:
             games += 1

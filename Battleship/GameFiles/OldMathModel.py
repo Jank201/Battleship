@@ -27,3 +27,4 @@ def createPossArray(): # creates a 2D which represents the number possible ship 
             x1, y1 = distanceFromEdge(x,y)
             array[x][y] = numOfPoss(x1,y1)
     return array
+    
