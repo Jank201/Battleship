@@ -1,21 +1,24 @@
-from pickle import TRUE
 import pygame
 from random import randint 
 import time
 import numpy as np
 
-FPS = 60
-WINDOWHEIGHT = 800
-WINDOWWIDTH = 600
-TILESIZE = 50
-BOARDDIM = 100
 BOARDSQUARES = 3
-TEXTSIZE = 40
 SHIPLENGTH = 3
 
 
-XMARGIN = int((WINDOWWIDTH - (BOARDSQUARES * TILESIZE) - BOARDDIM - TEXTSIZE) / 2) #x-position of the top left corner of board 
-YMARGIN = int((WINDOWHEIGHT - (BOARDSQUARES * TILESIZE) - TEXTSIZE) / 2) #y-position of the top left corner of board
+FPS = 100
+H = 600
+W = 800
+TILESIZE = 400/BOARDSQUARES
+BOARDDIM = 10
+TEXTSIZE = 40
+
+
+
+XMARGIN = 30 #x-position of the top left corner of board 
+YMARGIN = 30 #y-position of the top left corner of board
+
 
 BLACK = (0,0,0)
 RED = (255,0,0)
@@ -37,7 +40,7 @@ pygame.display.set_caption('BattleshipAI')
 
 class BattleshipAI:
 
-    def __init__(self, w = 600, h = 800):
+    def __init__(self, w = W, h = H):
         self.w = w
         self.h = h
         global DISPLAYSURF
@@ -62,7 +65,7 @@ class BattleshipAI:
     
         self.clock.tick(FPS)
 
-        return self.reward, self.gameOver, self.shots, self.HIT
+        return self.reward, self.gameOver, self.shots
 
 
     def reset(self):
@@ -99,15 +102,14 @@ class BattleshipAI:
         for x in range(BOARDSQUARES):
             for y in range(BOARDSQUARES):
                 if board[x][y] == 1:
-                    pygame.draw.rect(DISPLAYSURF, GRAY, (XMARGIN+60*x,YMARGIN+60*y, TILESIZE, TILESIZE))
+                    pygame.draw.rect(DISPLAYSURF, GRAY, (XMARGIN+(TILESIZE+10)*x,YMARGIN+(TILESIZE+10)*y, TILESIZE, TILESIZE))
                 elif board[x][y] == 3:
-                    pygame.draw.rect(DISPLAYSURF, YELLOW, (XMARGIN+60*x,YMARGIN+60*y, TILESIZE, TILESIZE))
+                    pygame.draw.rect(DISPLAYSURF, YELLOW, (XMARGIN+(TILESIZE+10)*x,YMARGIN+(TILESIZE+10)*y, TILESIZE, TILESIZE))
                 elif board[x][y] == 4:
-                    pygame.draw.rect(DISPLAYSURF, RED, (XMARGIN+60*x,YMARGIN+60*y, TILESIZE, TILESIZE))
+                    pygame.draw.rect(DISPLAYSURF, RED, (XMARGIN+(TILESIZE+10)*x,YMARGIN+(TILESIZE+10)*y, TILESIZE, TILESIZE))
                 else:
-                    pygame.draw.rect(DISPLAYSURF, BLUE, (XMARGIN+60*x,YMARGIN+60*y, TILESIZE, TILESIZE))
+                    pygame.draw.rect(DISPLAYSURF, BLUE, (XMARGIN+(TILESIZE+10)*x,YMARGIN+(TILESIZE+10)*y, TILESIZE, TILESIZE))
         pygame.display.update()
-
 
     def _getPixelofTile(self,tilex,tiley):
         left = tilex*(TILESIZE+10) + XMARGIN
@@ -126,7 +128,6 @@ class BattleshipAI:
     def getTilefromInput(self, action):
         if np.array_equal(action, [1,0,0,0,0,0,0,0,0]):
             if self.shipBoard[0][2] == 1:
-                print('HIT')
                 self.shipTiles -= 1
                 self.shipBoard[0][2] = 4
                 self.shots += 1
@@ -139,11 +140,9 @@ class BattleshipAI:
             else:
                 self.shots += 1
                 self.shipBoard[0][2] = 3
-                print('miss')
                 self.reward = -10
         if np.array_equal(action, [0,1,0,0,0,0,0,0,0]):
             if self.shipBoard[1][2] == 1:
-                print('HIT')
                 self.shipTiles -= 1
                 self.shipBoard[1][2] = 4
                 self.shots += 1
@@ -156,11 +155,9 @@ class BattleshipAI:
             else:
                 self.shots += 1
                 self.shipBoard[1][2] = 3
-                print('miss')
                 self.reward = -10
         if np.array_equal(action, [0,0,1,0,0,0,0,0,0]):
             if self.shipBoard[2][2] == 1:
-                print('HIT')
                 self.shipTiles -= 1
                 self.shipBoard[2][2] = 4
                 self.shots += 1
@@ -173,11 +170,9 @@ class BattleshipAI:
             else:
                 self.shots += 1
                 self.shipBoard[2][2] = 3
-                print('miss')
                 self.reward = -10
         if np.array_equal(action, [0,0,0,1,0,0,0,0,0]):
             if self.shipBoard[0][1] == 1:
-                print('HIT')
                 self.shipTiles -= 1
                 self.shipBoard[0][1] = 4
                 self.shots += 1
@@ -190,11 +185,9 @@ class BattleshipAI:
             else:
                 self.shots += 1
                 self.shipBoard[0][1] = 3
-                print('miss')
                 self.reward = -10
         if np.array_equal(action, [0,0,0,0,1,0,0,0,0]):
             if self.shipBoard[1][1] == 1:
-                print('HIT')
                 self.shipTiles -= 1
                 self.shipBoard[1][1] = 4
                 self.shots += 1
@@ -207,11 +200,9 @@ class BattleshipAI:
             else:
                 self.shots += 1
                 self.shipBoard[1][1] = 3
-                print('miss')
                 self.reward = -10
         if np.array_equal(action, [0,0,0,0,0,1,0,0,0]):
             if self.shipBoard[2][1] == 1:
-                print('HIT')
                 self.shipTiles -= 1
                 self.shipBoard[2][1] = 4
                 self.shots += 1
@@ -224,11 +215,9 @@ class BattleshipAI:
             else:
                 self.shots += 1
                 self.shipBoard[2][1] = 3
-                print('miss')
                 self.reward = -10
         if np.array_equal(action, [0,0,0,0,0,0,1,0,0]):
             if self.shipBoard[0][0] == 1:
-                print('HIT')
                 self.shipTiles -= 1
                 self.shipBoard[0][0] = 4
                 self.shots += 1
@@ -241,11 +230,9 @@ class BattleshipAI:
             else:
                 self.shots += 1
                 self.shipBoard[0][0] = 3
-                print('miss')
                 self.reward = -10
         if np.array_equal(action, [0,0,0,0,0,0,0,1,0]):
             if self.shipBoard[1][0] == 1:
-                print('HIT')
                 self.shipTiles -= 1
                 self.shipBoard[1][0] = 4
                 self.shots += 1
@@ -258,11 +245,9 @@ class BattleshipAI:
             else:
                 self.shots += 1
                 self.shipBoard[1][0] = 3
-                print('miss')
                 self.reward = -10
         if np.array_equal(action, [0,0,0,0,0,0,0,0,1]):
             if self.shipBoard[2][0] == 1:
-                print('HIT')
                 self.shipTiles -= 1
                 self.shipBoard[2][0] = 4
                 self.shots += 1
@@ -275,7 +260,6 @@ class BattleshipAI:
             else:
                 self.shots += 1
                 self.shipBoard[2][0] = 3
-                print('miss')
                 self.reward = -10
 
 
