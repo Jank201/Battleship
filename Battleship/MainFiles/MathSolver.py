@@ -147,10 +147,10 @@ def shotlogic(board):
                 pass
             elif board[hit1x][hit1y] == board[hit1x][hit1y+1]:
                 nextshot = [hit1x,hit1y+2]
-                if nextshot[1] > len(board):
+                if nextshot[1] >= len(board):
                     nextshot = [hit1x, hit1y-1]
                     pass
-                if board[nextshot[0]][nextshot[1]] == 0:
+                elif board[nextshot[0]][nextshot[1]] == 0:
                     return nextshot
                 else:
                     nextshot = [hit1x,hit1y-1]
@@ -244,15 +244,13 @@ def resetBoards():
             
     shotBoard = np.array([[0 for y in range(BOARDSIZE)]for x in range(BOARDSIZE)])
 
-
-@jit(target_backend='cuda')
 def solver():
     plot_scores = []
     plot_mean_scores = []
     total_score = 0
     record = 9
     game = BattleshipAI()
-    games = 0
+    games = 1
     hit = False
     
     while True:
@@ -262,7 +260,6 @@ def solver():
         updateGhostBoard(shot)
         updateShotBoard(shot, hit)
         if done:
-            games += 1
             game.reset()
             resetBoards()
 
@@ -271,6 +268,7 @@ def solver():
                 record = score
 
             print('Game', games, 'Score', score, 'Record:', record)
+            games += 1
 
             plot_scores.append(score)
             total_score += score

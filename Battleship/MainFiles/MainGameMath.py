@@ -4,8 +4,8 @@ from random import randint
 import time
 import numpy as np
 
-BOARDSQUARES = 8
-SHIPLENGTH = 4
+BOARDSQUARES = 14
+SHIPLENGTH =5
 
 
 FPS = 100
@@ -81,14 +81,14 @@ class BattleshipAI:
         direction = randint(0,1)
         self.shipBoard = np.array([[0 for i in range(BOARDSQUARES)] for y in range(BOARDSQUARES)])
         if direction == 0:
-            originx = 0
-            originy = randint(0,BOARDSQUARES-SHIPLENGTH)
+            originx = randint(0,BOARDSQUARES-SHIPLENGTH)
+            originy = randint(0,BOARDSQUARES-1)
             for x in range(SHIPLENGTH):
                     self.shipBoard[originx+x][originy] = 1
             return self.shipBoard
         else:
-            originx = randint(0,BOARDSQUARES-SHIPLENGTH)
-            originy = 0
+            originx = randint(0,BOARDSQUARES-1)
+            originy = randint(0,BOARDSQUARES-SHIPLENGTH)
             for y in range(SHIPLENGTH):
                     self.shipBoard[originx][originy+y] = 1
             return self.shipBoard
