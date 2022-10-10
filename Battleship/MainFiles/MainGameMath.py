@@ -1,4 +1,3 @@
-from pickle import TRUE
 import pygame
 from random import randint 
 import time
