@@ -2,9 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from MainGameMath import BattleshipAI, SHIPLENGTH, BOARDSQUARES
 from Graph import plot
-from numba import jit, cuda
-
-
 
 
 BOARDSIZE = BOARDSQUARES
