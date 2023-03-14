@@ -1,0 +1,5 @@
+import numpy as np
+
+testarr = np.zeros((9,9),np.int8)
+
+print(testarr[7][7])

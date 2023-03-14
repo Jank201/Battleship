@@ -1,5 +1,5 @@
 import numpy as np
-from MainGameMath import BattleshipAI, SHIPLENGTH, BOARDSQUARES
+from MainGameMath import BattleshipAI, SHIPLENGTH, BOARDSQUARES, NSHIPS
 from Graph import plot
 
 

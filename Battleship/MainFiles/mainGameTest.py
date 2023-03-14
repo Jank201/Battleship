@@ -2,14 +2,14 @@ import pygame
 from random import randint 
 import time
 import numpy as np
+import keyboard
 
-BOARDSQUARES = 10
-SHIPLENGTH = 2
-NSHIPS = 5
+BOARDSQUARES = 9
+SHIPLENGTH = 6
+NSHIPS = 2
 
-SHIPS = np.array([5,4,3,3,2])
 
-FPS = 20
+FPS = 100
 H = 600
 W = 800
 TILESIZE = 400/BOARDSQUARES
@@ -72,7 +72,7 @@ class BattleshipAI:
     def reset(self):
         time.sleep(0.1)
         self.shots = 0
-        self.shipTiles = SHIPS.sum()
+        self.shipTiles = SHIPLENGTH
         self.upBoard = self._createBoard()
         self._draw_board(self.upBoard)
         self.frameIteration = 0
@@ -80,35 +80,37 @@ class BattleshipAI:
 
     def _createBoard(self):
         self.shipBoard = np.zeros((BOARDSQUARES, BOARDSQUARES),np.int8)
-        for x in SHIPS:
-            while True:
-                direction = randint(0,1)
-                if direction == 0:
-                    originx = randint(0,BOARDSQUARES-x)
+        for x in range(NSHIPS):
+            direction = randint(0,1)
+            if direction == 0:
+                t = True
+                while t:
+                    originx = randint(0,BOARDSQUARES-SHIPLENGTH)
                     originy = randint(0,BOARDSQUARES-1)
-                    print(originx,originy)
-                    if (originx+x >= BOARDSQUARES):
+                    if (originx+SHIPLENGTH >= BOARDSQUARES):
                         if (self.shipBoard[originx:, originy] == 0).all(): 
                             break
                     else:
-                        if (self.shipBoard[originx:originx+x, originy] == 0).all():
-                            break     
-                else:
+                        if (self.shipBoard[originx:originx+SHIPLENGTH, originy] == 0).all():
+                            break
+               
+                for x in range(SHIPLENGTH):
+                        self.shipBoard[originx+x][originy] = 1
+            else:
+                originx = randint(0,BOARDSQUARES-1)
+                originy = randint(0,BOARDSQUARES-SHIPLENGTH)
+                t = True
+                while t:
                     originx = randint(0,BOARDSQUARES-1)
-                    originy = randint(0,BOARDSQUARES-x)
-                    print(originx,originy)
-                    if (originy+x >= BOARDSQUARES):
+                    originy = randint(0,BOARDSQUARES-SHIPLENGTH)
+                    if (originy+SHIPLENGTH >= BOARDSQUARES):
                         if 1 not in self.shipBoard[originx][originy:]:
                             break
                     else:
-                        if 1 not in self.shipBoard[originx][originy:(originy+x)]:
+                        if 1 not in self.shipBoard[originx][originy:(originy+SHIPLENGTH)]:
                             break
-            if direction == 0:
-                for x in range(x):
-                        self.shipBoard[originx+x][originy] = 1
-            else:
-                for y in range(x):
-                        self.shipBoard[originx][originy+y] = 1  
+                for y in range(SHIPLENGTH):
+                        self.shipBoard[originx][originy+y] = 1
         return self.shipBoard
 
     def _drawWindow(self):
@@ -116,6 +118,7 @@ class BattleshipAI:
 
 
     def _draw_board(self,board):
+        
         for x in range(BOARDSQUARES):
             for y in range(BOARDSQUARES):
                 if board[x][y] == 1:
@@ -166,6 +169,11 @@ class BattleshipAI:
             self.HIT = False
 
 
-
 if __name__ == '__main__':
-    game = BattleshipAI()
+    while True:
+        game = BattleshipAI()
+        if input() == ' ':
+            continue
+    
+  
+
