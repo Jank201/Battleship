@@ -1,11 +1,11 @@
-from pickle import TRUE
 import pygame
 from random import randint 
 import time
 import numpy as np
 
-BOARDSQUARES = 14
-SHIPLENGTH =5
+BOARDSQUARES = 9
+SHIPLENGTH = 6
+NSHIPS = 2
 
 
 FPS = 100
@@ -78,20 +78,26 @@ class BattleshipAI:
 
 
     def _createBoard(self):
-        direction = randint(0,1)
         self.shipBoard = np.array([[0 for i in range(BOARDSQUARES)] for y in range(BOARDSQUARES)])
-        if direction == 0:
-            originx = randint(0,BOARDSQUARES-SHIPLENGTH)
-            originy = randint(0,BOARDSQUARES-1)
-            for x in range(SHIPLENGTH):
-                    self.shipBoard[originx+x][originy] = 1
-            return self.shipBoard
-        else:
-            originx = randint(0,BOARDSQUARES-1)
-            originy = randint(0,BOARDSQUARES-SHIPLENGTH)
-            for y in range(SHIPLENGTH):
-                    self.shipBoard[originx][originy+y] = 1
-            return self.shipBoard
+        for x in range(NSHIPS):
+            direction = randint(0,1)
+            if direction == 0:
+                t= True
+                while t:
+                    originx = randint(0,BOARDSQUARES-SHIPLENGTH)
+                    originy = randint(0,BOARDSQUARES-1)
+                    print(originx,originy)
+                    if 1 not in self.shipBoard[originx:originx+SHIPLENGTH][originy]:
+                        t = False
+                    print("valid!")
+                for x in range(SHIPLENGTH):
+                        self.shipBoard[originx+x][originy] = 1
+            else:
+                originx = randint(0,BOARDSQUARES-1)
+                originy = randint(0,BOARDSQUARES-SHIPLENGTH)
+                for y in range(SHIPLENGTH):
+                        self.shipBoard[originx][originy+y] = 1
+        return self.shipBoard
 
     def _drawWindow(self):
         DISPLAYSURF.fill(LIGHTBLUE)
